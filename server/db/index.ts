@@ -2,6 +2,7 @@ import knexFile from './knexfile.js'
 import knex from 'knex'
 import type { Location, LocationData } from '../../models/Location.ts'
 import type { Event, EventWithLocation, EventData } from '../../models/Event.ts'
+import { describe } from 'vitest'
 
 type Environment = 'production' | 'test' | 'development'
 
@@ -50,4 +51,12 @@ export async function updateLocation(updatedLocation: Location) {
     const result = await connection('locations').where({'id': updatedLocation.id}).first()
 
   return result as Location
+}
+//name: string, description: string, time: string, day:string, locationId: number
+//name, description, time, day, locationId
+export async function addNewEvent(eventObj: EventData) {
+  console.log(eventObj)
+  const {locationId, ...rest} = eventObj
+  const [id] = await connection('events').insert({location_id: locationId, ...rest})
+  return id
 }
