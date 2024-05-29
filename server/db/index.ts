@@ -31,3 +31,23 @@ export async function getEventsByDay(day: string) {
 
     return events as EventWithLocation[]
 }
+
+export async function getLocationById(id: string) {
+  const events = await connection('locations').where({id}).first()
+  return events as Location
+}
+
+export async function updateLocation(updatedLocation: Location) {
+  const changes = await connection('locations')
+    .where({'id': updatedLocation.id})
+    .update({
+      'id': updatedLocation.id,
+      'name': updatedLocation.name,
+      'description': updatedLocation.description
+    })
+    console.log(changes)
+
+    const result = await connection('locations').where({'id': updatedLocation.id}).first()
+
+  return result as Location
+}
