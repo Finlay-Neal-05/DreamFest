@@ -11,7 +11,7 @@ router.post('/', async (req, res, next) => {
   try {
     const { name, description, time, locationId } = req.body
     const day = validateDay(req.body.day)
-    const id = db.addNewEvent({name, description, time, day, locationId})
+    const id = db.addNewEvent({ name, description, time, day, locationId })
     const url = `/api/v1/events/${id}`
     res.setHeader('Location', url)
     res.status(201).json({ location: url })
@@ -23,7 +23,8 @@ router.post('/', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const id = Number(req.params.id)
-    // TODO: DELETE the event with this matching ID
+    await db.deleteEventById(id)
+    res.status(200)
   } catch (e) {
     next(e)
   }
