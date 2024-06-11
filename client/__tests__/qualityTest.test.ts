@@ -9,15 +9,13 @@ beforeAll(() => {
 
 describe('clicking delete does something', () => {
   it('delete when clicked', async () => {
-    const scope = nock('http://localhost:3000')
+    const scope = nock('http://localhost:5173')
       .delete(`/api/v1/events/1`)
-      .reply(202, {
-        id: 1,
-      })
+      .reply(202)
 
     const screen = setupApp('/events/1/edit')
     const button = screen.findByText('Delete event')
-    console.log(scope)
+    console.log(scope.isDone())
     scope.pendingMocks()
     expect(button).toBeVisible
     expect(scope.isDone()).toBe(true)
