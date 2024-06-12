@@ -25,9 +25,9 @@ export async function getEventsByDay(day: string) {
       'events.day',
       'events.time',
       'events.description' as 'eventDescription',
-      'locations.description' as 'locationDescription'
-
-    )
+      'locations.description' as 'locationDescription',
+      'events.id' as 'id'
+     )
     .where({'events.day': day})
 
     return events as EventWithLocation[]
@@ -60,3 +60,11 @@ export async function addNewEvent(eventObj: EventData) {
   const [id] = await connection('events').insert({location_id: locationId, ...rest})
   return id
 }
+// It doesn't throw errors, it doesn't work, maybe it's dead...
+export async function deleteEvent(id: number) {
+  console.log('hit the db')
+  const result = await connection('events').where({id}).del()
+  console.log(result)
+  return result
+}
+

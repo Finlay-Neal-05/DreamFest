@@ -2,7 +2,6 @@ import express from 'express'
 
 import * as db from '../db/index.ts'
 
-import { Location } from '../../models/Location.ts'
 
 const router = express.Router()
 
