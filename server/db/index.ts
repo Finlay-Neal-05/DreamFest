@@ -19,36 +19,44 @@ export async function getEventsByDay(day: string) {
   const events = await connection('events')
     .join('locations', 'location_id', 'locations.id')
     .select(
+      'events.id' as 'eventsId',
       'location_id' as 'locationId',
       'events.name' as 'eventsName',
       'locations.name' as 'locationName',
       'events.day',
       'events.time',
       'events.description' as 'eventDescription',
-      'locations.description' as 'locationDescription',
-      'events.id' as 'id'
-     )
+      'locations.description' as 'locationDescription'
+
+    )
     .where({'events.day': day})
 
-    return events as EventWithLocation[]
+  return events as EventWithLocation[]
+}
+
+export async function deleteEventById(id: number) {
+  const result = await connection('events').where({ id }).del()
+  return result
 }
 
 export async function getLocationById(id: string) {
-  const events = await connection('locations').where({id}).first()
+  const events = await connection('locations').where({ id }).first()
   return events as Location
 }
 
 export async function updateLocation(updatedLocation: Location) {
   const changes = await connection('locations')
-    .where({'id': updatedLocation.id})
+    .where({ id: updatedLocation.id })
     .update({
-      'id': updatedLocation.id,
-      'name': updatedLocation.name,
-      'description': updatedLocation.description
+      id: updatedLocation.id,
+      name: updatedLocation.name,
+      description: updatedLocation.description,
     })
-    console.log(changes)
+  console.log(changes)
 
-    const result = await connection('locations').where({'id': updatedLocation.id}).first()
+  const result = await connection('locations')
+    .where({ id: updatedLocation.id })
+    .first()
 
   return result as Location
 }
@@ -56,15 +64,10 @@ export async function updateLocation(updatedLocation: Location) {
 //name, description, time, day, locationId
 export async function addNewEvent(eventObj: EventData) {
   console.log(eventObj)
-  const {locationId, ...rest} = eventObj
-  const [id] = await connection('events').insert({location_id: locationId, ...rest})
+  const { locationId, ...rest } = eventObj
+  const [id] = await connection('events').insert({
+    location_id: locationId,
+    ...rest,
+  })
   return id
 }
-// It doesn't throw errors, it doesn't work, maybe it's dead...
-export async function deleteEvent(id: number) {
-  console.log('hit the db')
-  const result = await connection('events').where({id}).del()
-  console.log(result)
-  return result
-}
-
