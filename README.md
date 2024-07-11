@@ -1,5 +1,9 @@
 # DreamFest
 
+## Finlay-Neal-05's Part:
+
+built as per readme instructions. Wrote unit tests myself, as can be seen in test files :))
+
 Dreamfest is a music festival, and the planning team has already built the UI and the routes, as well as having designed and seeded the initial database tables. We'll implement the database functions to be used from the routes, allowing the planning team to manage locations and events.
 
 <details>
